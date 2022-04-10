@@ -1,0 +1,113 @@
+import vk_api
+from vk_api.longpoll import VkLongPoll,VkEventType
+from vk_api.keyboard import VkKeyboard,VkKeyboardColor
+
+
+def send_some_msg   (id,some_text,keyboard=None):
+    post={"user_id":id ,"message":some_text,"random_id":0}
+
+    if keyboard!=None:
+        post["keyboard"]=keyboard.get_keyboard()
+    else: post=post
+    vk_session.method("messages.send",post)
+
+vk_session= vk_api.VkApi(token="945ce9c3cab01a4b21dda04a6d505e9c57327e18504dbc79b46fbb85b345169cb8e29adef81cb26a76ff3")
+session_api= vk_session.get_api()
+longpool=VkLongPoll(vk_session)
+
+for event in longpool.listen():
+    if event.type==VkEventType.MESSAGE_NEW:
+        if event.to_me:
+            msg=event.text.lower()
+            id = event.user_id
+            keyboard = VkKeyboard(one_time=True)
+            keyboard.add_button("Да!", color=VkKeyboardColor.PRIMARY)
+            keyboard.add_button("Нет!", color=VkKeyboardColor.NEGATIVE)
+
+            keyboard1 = VkKeyboard(one_time=True)
+            keyboard1.add_button("Отлично", color=VkKeyboardColor.PRIMARY)
+            keyboard1.add_button("Хорошо", color=VkKeyboardColor.POSITIVE)
+            keyboard1.add_button("Закончить!", color=VkKeyboardColor.NEGATIVE)
+
+
+            keyboard2 = VkKeyboard(one_time=True)
+            keyboard2.add_button("Учавствовал!", color=VkKeyboardColor.PRIMARY)
+            keyboard2.add_button("Не Учавствовал", color=VkKeyboardColor.POSITIVE)
+            keyboard2.add_button("Закончить!", color=VkKeyboardColor.NEGATIVE)
+
+            keyboard3 = VkKeyboard(one_time=True)
+            keyboard3.add_button("Вездекод", color=VkKeyboardColor.PRIMARY)
+            keyboard3.add_button("Вездекот", color=VkKeyboardColor.POSITIVE)
+            keyboard3.add_button("Закончить!", color=VkKeyboardColor.NEGATIVE)
+
+            keyboard4 = VkKeyboard(one_time=True)
+            keyboard4.add_button("Конечно", color=VkKeyboardColor.PRIMARY)
+            keyboard4.add_button("Однозначно", color=VkKeyboardColor.POSITIVE)
+            keyboard4.add_button("Закончить!", color=VkKeyboardColor.NEGATIVE)
+
+            keyboard5 = VkKeyboard(one_time=True)
+            keyboard5.add_button("Крутое!", color=VkKeyboardColor.PRIMARY)
+            keyboard5.add_button("Очень крутое!", color=VkKeyboardColor.POSITIVE)
+            keyboard5.add_button("Закончить!", color=VkKeyboardColor.NEGATIVE)
+
+            keyboard6 = VkKeyboard(one_time=True)
+            keyboard6.add_button("Телеграмм", color=VkKeyboardColor.PRIMARY)
+            keyboard6.add_button("Вк", color=VkKeyboardColor.POSITIVE)
+            keyboard6.add_button("Закончить!", color=VkKeyboardColor.NEGATIVE)
+
+            keyboard7 = VkKeyboard(one_time=True)
+            keyboard7.add_button("Персик", color=VkKeyboardColor.PRIMARY)
+            keyboard7.add_button("Сеня", color=VkKeyboardColor.POSITIVE)
+            keyboard7.add_button("Закончить!", color=VkKeyboardColor.NEGATIVE)
+
+            keyboard8 = VkKeyboard(one_time=True)
+            keyboard8.add_button("Создавать", color=VkKeyboardColor.PRIMARY)
+            keyboard8.add_button("Смотреть", color=VkKeyboardColor.POSITIVE)
+            keyboard8.add_button("Закончить!", color=VkKeyboardColor.NEGATIVE)
+
+
+            keyboard9 = VkKeyboard(one_time=True)
+            keyboard9.add_button("Мемы", color=VkKeyboardColor.PRIMARY)
+            keyboard9.add_button("Статистика", color=VkKeyboardColor.POSITIVE)
+            keyboard9.add_button("Добавить свой мем", color=VkKeyboardColor.PRIMARY)
+
+            if msg=="привет":
+                send_some_msg(id,"Привет вездекодерам!")
+                send_some_msg(id, "Можно задать несколько вопросов ?", keyboard)
+            msg = event.text.lower()
+            if msg == "да!" :
+                send_some_msg(id, "Как дела ?", keyboard1)
+                msg = event.text
+
+            if msg == "хорошо" or msg == "отлично" :
+                send_some_msg(id, "учавствовал ли ты в вездекоде  ?", keyboard2)
+                msg = event.text.lower()
+
+            if msg == "учавствовал!" or msg == "не учавствовал" :
+                send_some_msg(id, "Вездекод или Вездекот?", keyboard3)
+                msg = event.text.lower()
+
+            if msg == "вездекод" or msg == "вездекот" :
+                send_some_msg(id, "учавствовал бы ли ты в следующий раз ?", keyboard4)
+                msg = event.text.lower()
+
+            if msg == "конечно" or msg == "однозначно" :
+                send_some_msg(id, "Как ты оценишь данное мероприятие  ?", keyboard5)
+                msg = event.text.lower()
+
+            if msg == "крутое!" or msg == "очень крутое!" :
+                send_some_msg(id, "Телеграмм или Вк", keyboard6)
+                msg = event.text.lower()
+
+            if msg == "вк" or msg == "телеграмм" :
+                send_some_msg(id, "Персик или Сеня?", keyboard7)
+                msg = event.text.lower()
+
+            if msg == "персик" or msg == "сеня" :
+                send_some_msg(id, "Создавать свои мемы или смотреть ?", keyboard8)
+                msg = event.text.lower()
+
+            if msg=="закончить!" or msg=="нет!" or msg=="смотреть" or msg=="создавать":
+                    send_some_msg(id,"Идем дальше",keyboard9)
+                    msg = event.text.lower()
+           
